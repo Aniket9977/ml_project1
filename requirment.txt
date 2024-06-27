@@ -2,4 +2,6 @@ pandas
 numpy 
 seaborn
 logger
--e .
+catboost
+xgboost
+#-e .
