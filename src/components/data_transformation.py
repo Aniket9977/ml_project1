@@ -10,10 +10,7 @@ from sklearn.preprocessing import OneHotEncoder , StandardScaler
 from src.exception import CustomError
 from src.logger import logging
 from dataclasses import dataclass
-
 from src.utils import save_object
-
-
 
 @dataclass 
 class DataTransformationConfig:
@@ -23,7 +20,7 @@ class DataTransformation:
     def __init__(self) -> None:
         self.data_transformation_config=DataTransformationConfig()
 
-    def get_data_transformer_object(self):
+    def get_data_transformer_object():
         try:
             numerical_columns = ['reading_score','writing_score']
             categorical_columns = [
@@ -35,7 +32,7 @@ class DataTransformation:
             ]
             num_pipline = Pipeline(
                 steps=[
-                    ('imputer',SimpleImputer(strategy='median')),
+                    ('imputer',SimpleImputer(strategy='medium')),
                     ('scaler' ,StandardScaler())
                 ]
             )
@@ -43,7 +40,7 @@ class DataTransformation:
 
             cat_pipline = Pipeline(
                 steps= [
-                    ('imputer' , SimpleImputer(strategy='most_frequent')),
+                    ('imputer' , SimpleImputer(strategy='most_fequent')),
                     ('one_hot_encoding' , OneHotEncoder()),
                     ('scaler' , StandardScaler())
                 ]
@@ -68,33 +65,30 @@ class DataTransformation:
             test_df = pd.read_csv(test_path)
             logging.info('Reading test and train data done')
             logging.info('Obtaning preprocessor object')
-            preprocessing_obj=self.get_data_transformer_object()
+            precessing_obj = self.get_data_transformer_object()
+            target_column = 'math_score'
+            numerical_columns = ['reading_score','writing_score']
+            input_feature_train_df = train_df.drop(columns=[target_column],axis =1)
+            target_feature_test_df = test_df[target_column]
 
-            target_column_name="math_score"
-            numerical_columns = ["writing_score", "reading_score"]
+            logging.info('Apply for preprocessor object for traning')
 
-            input_feature_train_df=train_df.drop(columns=[target_column_name],axis=1)
-
-            target_feature_train_df=train_df[target_column_name]
-
-            input_feature_test_df=test_df.drop(columns=[target_column_name],axis=1)
-
-            target_feature_test_df=test_df[target_column_name]
-
-            logging.info(
-                f"Applying preprocessing object on training dataframe and testing dataframe."
-            )
-
-            input_feature_train_arr=preprocessing_obj.fit_transform(input_feature_train_df)
-            input_feature_test_arr=preprocessing_obj.transform(input_feature_test_df)
+            input_feature_train_arr = precessing_obj.fit_transform(input_feature_train_df)
+            input_feature_test_arr = precessing_obj.transform(input_feature_train_df)
 
             train_arr = np.c_[
-                input_feature_train_arr, np.array(target_feature_train_df)
-            ]
-            test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
+                input_feature_train_arr , np.array(target_feature_test_df)
 
-            logging.info(f"Saved preprocessing object.")
-        
+            ]
+
+            test_arr = np.c_[input_feature_test_arr , np.array(target_feature_test_df)]
+
+            logging.info('Saved preocessing object')
+
+
+            save_object(
+                file_path = self.data_transformation_config.preprocessor_obj_file_path , 
+                obj = precessing_obj
+            )
         except Exception as e:
             raise CustomError(e,sys)
-        
