@@ -1,7 +1,7 @@
 import os 
 import sys
-from utils import evaluate_models
-from utils import  save_object
+from src.utils import evaluate_models
+from src.utils import  save_object
 
 from sklearn.ensemble import (
     AdaBoostClassifier,
