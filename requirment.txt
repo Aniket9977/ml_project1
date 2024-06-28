@@ -4,4 +4,6 @@ seaborn
 logger
 catboost
 xgboost
+scikit-learn
+dill
 #-e .

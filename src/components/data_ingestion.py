@@ -5,7 +5,8 @@ from src.logger import logging
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
-
+from src.components.data_transformation import DataTransformation
+from src.components.data_transformation import DataTransformationConfig
 
 @dataclass
 class DataIngestionConfig:
@@ -20,8 +21,8 @@ class DataIngestion:
     def initiate_data_ingestion(self):
         logging.info('Entered data ingestion ')
         try:
-            path = r'src\notebook\data\stud.csv'
-            df = pd.read_csv(path)
+            
+            df = pd.read_csv(r'Git\ml_project1\src\notebook\data\stud.csv')
             logging.info('data is loaded from csv')
             
             os.makedirs(os.path.dirname(self.ingestionConfig.train_data_path), exist_ok=True)
@@ -44,3 +45,5 @@ class DataIngestion:
 if __name__=='__main__':
     obj=DataIngestion()
     train_data,test_data=obj.initiate_data_ingestion()
+    data_transformation = DataTransformation()
+    data_transformation.initiate_data_transformation(train_data , test_data)
