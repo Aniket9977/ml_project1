@@ -20,7 +20,7 @@ class DataTransformation:
     def __init__(self) -> None:
         self.data_transformation_config=DataTransformationConfig()
 
-    def get_data_transformer_object():
+    def get_data_transformer_object(self):
         try:
             numerical_columns = ['reading_score','writing_score']
             categorical_columns = [
@@ -32,7 +32,7 @@ class DataTransformation:
             ]
             num_pipline = Pipeline(
                 steps=[
-                    ('imputer',SimpleImputer(strategy='medium')),
+                    ('imputer',SimpleImputer(strategy='median')),
                     ('scaler' ,StandardScaler())
                 ]
             )
@@ -40,7 +40,7 @@ class DataTransformation:
 
             cat_pipline = Pipeline(
                 steps= [
-                    ('imputer' , SimpleImputer(strategy='most_fequent')),
+                    ('imputer' , SimpleImputer(strategy='most_frequent')),
                     ('one_hot_encoding' , OneHotEncoder()),
                     ('scaler' , StandardScaler())
                 ]
@@ -74,7 +74,7 @@ class DataTransformation:
             logging.info('Apply for preprocessor object for traning')
 
             input_feature_train_arr = precessing_obj.fit_transform(input_feature_train_df)
-            input_feature_test_arr = precessing_obj.transform(input_feature_train_df)
+            input_feature_test_arr = precessing_obj.transform(input_feature_test_df)
 
             train_arr = np.c_[
                 input_feature_train_arr , np.array(target_feature_test_df)

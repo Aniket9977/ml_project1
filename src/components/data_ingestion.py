@@ -24,7 +24,7 @@ class DataIngestion:
         logging.info('Entered data ingestion ')
         try:
             
-            df = pd.read_csv(r'Git\ml_project1\src\notebook\data\stud.csv')
+            df = pd.read_csv(r'src\notebook\data\stud.csv')
             logging.info('data is loaded from csv')
             
             os.makedirs(os.path.dirname(self.ingestionConfig.train_data_path), exist_ok=True)
