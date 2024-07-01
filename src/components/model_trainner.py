@@ -26,16 +26,16 @@ from dataclasses import dataclass
 @dataclass
 
 class ModelTranierConfig:
-    trained_model_dile_path = os.path.join('artifacts' ,'model.pkl') 
+    trained_model_file_path = os.path.join('artifact' ,'model.pkl') 
 
 class ModelTrainer:
     def __init__(self):
         self.model_trainer_config = ModelTranierConfig()
 
-    def initiate_model_trainer(self , train_array , test_array , preprocessor_path):
+    def initiate_model_trainer(self , train_array , test_array):
         try:
             logging.info("Splitting the data for traning and testing")
-            x_train, y_train , x_test , y_test = (
+            X_train,y_train,X_test,y_test=(
                 train_array[:,:-1],
                 train_array[:,-1],
                 test_array[:,:-1],
@@ -54,13 +54,13 @@ class ModelTrainer:
             params={
                 "Decision Tree": {
                     'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
-                    # 'splitter':['best','random'],
+                    'splitter':['best','random'],
                     # 'max_features':['sqrt','log2'],
                 },
                 "Random Forest":{
-                    # 'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
+                    'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
                  
-                    # 'max_features':['sqrt','log2',None],
+                    'max_features':['sqrt','log2',None],
                     'n_estimators': [8,16,32,64,128,256]
                 },
                 "Gradient Boosting":{
@@ -89,7 +89,7 @@ class ModelTrainer:
                 
             }
 
-            model_report:dict=evaluate_models(X_train=x_train,y_train=y_train,X_test=x_test,y_test=y_test,
+            model_report:dict=evaluate_models(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,
                                              models=models,param=params)
             
             best_model_score = max(sorted(model_report.values()))
@@ -107,15 +107,11 @@ class ModelTrainer:
                 file_path=self.model_trainer_config.trained_model_file_path,
                 obj=best_model
             )
-
-            predicted=best_model.predict(x_test)
+            logging.info(f"Model saved successfully")
+            predicted=best_model.predict(X_test)
 
             r2_square = r2_score(y_test, predicted)
             return r2_square
-            
-
-
-
             
         except Exception as e:
             raise CustomError(e,sys)
