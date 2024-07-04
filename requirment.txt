@@ -8,4 +8,5 @@ scikit-learn
 dill
 xgboost
 gunicorn
+Flask
 #-e .
