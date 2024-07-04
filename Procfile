@@ -1,1 +1,1 @@
-web: gunicorn -w 3 -b :5000 app:application
+web:gunicorn app:application
