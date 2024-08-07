@@ -39,8 +39,8 @@ if submit:
     st.write(pred_df)
 
     # Load the prediction pipeline and make predictions
-    predict_pipeline = PredictPipeline()
-    results = predict_pipeline.predict(pred_df)
+    predicts_pipeline = PredictPipeline()
+    results = predicts_pipeline.predict(pred_df)
 
     # Display the prediction
     st.write(f"Prediction: {results[0]}")
