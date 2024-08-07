@@ -1,7 +1,7 @@
 import pickle
 import streamlit as st
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
+
 from src.pipeline.predict_pipeline import PredictPipeline, CustomData
 
 # Home
