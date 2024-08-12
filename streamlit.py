@@ -7,21 +7,20 @@ from src.pipeline.predict_pipeline import PredictPipeline, CustomData
 # Home
 st.title("Prediction App")
 
-# Sidebar form
-with st.sidebar.form("prediction_form"):
-    st.header("Input Data")
-    gender = st.selectbox("Gender", ["male", "female"])
-    race_ethnicity = st.selectbox("Race/Ethnicity", ["group A", "group B", "group C", "group D", "group E"])
-    parental_level_of_education = st.selectbox("Parental Level of Education", [
-        "some high school", "high school", "some college", "associate's degree", "bachelor's degree", "master's degree"
-    ])
-    lunch = st.selectbox("Lunch", ["standard", "free/reduced"])
-    test_preparation_course = st.selectbox("Test Preparation Course", ["none", "completed"])
-    reading_score = st.number_input("Reading Score", min_value=0.0, max_value=100.0, step=0.1)
-    writing_score = st.number_input("Writing Score", min_value=0.0, max_value=100.0, step=0.1)
-    submit = st.form_submit_button("Predict")
+# Input fields
+st.header("Input Data")
+gender = st.selectbox("Gender", ["male", "female"])
+race_ethnicity = st.selectbox("Race/Ethnicity", ["group A", "group B", "group C", "group D", "group E"])
+parental_level_of_education = st.selectbox("Parental Level of Education", [
+    "some high school", "high school", "some college", "associate's degree", "bachelor's degree", "master's degree"
+])
+lunch = st.selectbox("Lunch", ["standard", "free/reduced"])
+test_preparation_course = st.selectbox("Test Preparation Course", ["none", "completed"])
+reading_score = st.number_input("Reading Score", min_value=0.0, max_value=100.0, step=0.1)
+writing_score = st.number_input("Writing Score", min_value=0.0, max_value=100.0, step=0.1)
 
-if submit:
+# Button to trigger prediction
+if st.button("Predict"):
     # Create an instance of CustomData with input data
     data = CustomData(
         gender=gender,
@@ -44,4 +43,3 @@ if submit:
 
     # Display the prediction
     st.write(f"Prediction: {results[0]}")
-
