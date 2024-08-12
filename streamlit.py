@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler
 from src.pipeline.predict_pipeline import PredictPipeline, CustomData
 
 # Home
-st.title("Prediction App")
+st.title("Predictor ")
 
 # Input fields
 st.header("Input Data")
